@@ -19,6 +19,7 @@ class HomePage extends StatelessWidget {
         actions: [
           IconButton(onPressed: signUserOut, icon: Icon(Icons.logout_rounded))
         ],
+        backgroundColor: Color(0xFF64C369),
       ),
       body: Center(
         child: Text(
