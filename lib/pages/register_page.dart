@@ -17,58 +17,53 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   //text editing controller
   final emailController = TextEditingController();
-
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
-  String error = "";
-
-  void signUserIn() async {
+  void signUserUp() async {
     //show loading circle
     showDialog(
       context: context,
       builder: (context) {
         return const Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(color: Color(0xFF64C369)),
         );
       },
     );
-
+    //try creating the user
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
+      //check if password is confirmed
+      if (passwordController.text == confirmPasswordController.text) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+      } else {
+        //show error message
+        showErrorMessage("Passwords don't match");
+      }
+
       //pop the loading circle
       Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
-      if (e.code == 'invalid-email') {
-        //show erro to user
-        wrongEmailMessage();
-      } else if (e.code == 'wrong-password') {
-        //show error
-        wrongPasswordMessage();
-      }
+      //show erro message
+      showErrorMessage(e.code);
     }
   }
 
-  void wrongPasswordMessage() {
+  void showErrorMessage(String message) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Incorrect Password"),
-        );
-      },
-    );
-  }
-
-  void wrongEmailMessage() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text("Incorrect Email"),
+          backgroundColor: const Color.fromARGB(255, 214, 88, 79),
+          title: Center(
+            child: Text(
+              message,
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
         );
       },
     );
@@ -77,25 +72,25 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Color.fromARGB(255, 226, 246, 220),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 50),
+                const SizedBox(height: 30),
 
                 //logo
                 Icon(
                   Icons.lock,
-                  size: 100,
+                  size: 70,
                 ),
                 const SizedBox(height: 50),
 
                 //welcome back
                 Text(
-                  "Welcome we know it's your first time",
+                  "Create a brand new account",
                   style: TextStyle(color: Colors.grey[700], fontSize: 16),
                 ),
 
@@ -108,7 +103,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   obscureText: false,
                 ),
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 15),
 
                 //passwordtext field
                 MyTextField(
@@ -117,31 +112,22 @@ class _RegisterPageState extends State<RegisterPage> {
                   obscureText: true,
                 ),
 
-                //forgot password
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 10, 30, 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        "Forgot Password?",
-                        style: TextStyle(color: Colors.grey[600]),
-                      ),
-                    ],
-                  ),
+                const SizedBox(height: 15),
+
+                //confirm password
+                MyTextField(
+                  controller: confirmPasswordController,
+                  hintText: 'Confirm Password',
+                  obscureText: true,
                 ),
 
-                const SizedBox(height: 25),
-                if (error != "")
-                  Text(
-                    error,
-                    style: TextStyle(color: Colors.red),
-                  ),
+                
                 const SizedBox(height: 25),
 
                 //signin
                 MyButton(
-                  onTap: signUserIn,
+                  onTap: signUserUp,
+                  text: "Sign Up",
                 ),
 
                 const SizedBox(height: 25),
@@ -200,7 +186,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Not a member?",
+                      "Already have an account?",
                       style: TextStyle(color: Colors.grey[700]),
                     ),
                     const SizedBox(
@@ -209,9 +195,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     GestureDetector(
                       onTap: widget.onTap,
                       child: Text(
-                        "Register Now",
+                        "Login now",
                         style: TextStyle(
-                          color: Colors.blue,
+                          color: Color(0xFF64C369),
                           fontWeight: FontWeight.bold,
                         ),
                       ),

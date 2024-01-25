@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
       context: context,
       builder: (context) {
         return const Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(color: Color(0xFF64C369)),
         );
       },
     );
@@ -44,31 +44,26 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.pop(context);
       if (e.code == 'invalid-email') {
         //show erro to user
-        wrongEmailMessage();
+        showErrorMessage(e.code);
       } else if (e.code == 'wrong-password') {
         //show error
-        wrongPasswordMessage();
+        showErrorMessage(e.code);
       }
     }
   }
 
-  void wrongPasswordMessage() {
+  void showErrorMessage(String message) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Incorrect Password"),
-        );
-      },
-    );
-  }
-
-  void wrongEmailMessage() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text("Incorrect Email"),
+          backgroundColor: const Color.fromARGB(255, 214, 88, 79),
+          title: Center(
+            child: Text(
+              message,
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
         );
       },
     );
@@ -77,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Color.fromARGB(255, 226, 246, 220),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -106,6 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                   controller: emailController,
                   hintText: 'Email',
                   obscureText: false,
+                  
                 ),
 
                 const SizedBox(height: 20),
@@ -132,16 +128,11 @@ class _LoginPageState extends State<LoginPage> {
                 ),
 
                 const SizedBox(height: 25),
-                if (error != "")
-                  Text(
-                    error,
-                    style: TextStyle(color: Colors.red),
-                  ),
-                const SizedBox(height: 25),
 
                 //signin
                 MyButton(
                   onTap: signUserIn,
+                  text: "Sign in",
                 ),
 
                 const SizedBox(height: 25),
@@ -211,7 +202,9 @@ class _LoginPageState extends State<LoginPage> {
                       child: Text(
                         "Register Now",
                         style: TextStyle(
-                            color: Colors.blue, fontWeight: FontWeight.bold,),
+                          color: Color(0xFF64C369),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],
