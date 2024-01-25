@@ -7,7 +7,7 @@ import 'package:flutterauth/components/my_textfield.dart';
 import 'package:flutterauth/components/square_tile.dart';
 
 class RegisterPage extends StatefulWidget {
-  final Function onTap;
+  final Function()? onTap;
   const RegisterPage({super.key, required this.onTap});
 
   @override
@@ -95,7 +95,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 //welcome back
                 Text(
-                  "Welcome back we missed you",
+                  "Welcome we know it's your first time",
                   style: TextStyle(color: Colors.grey[700], fontSize: 16),
                 ),
 
@@ -207,11 +207,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       width: 4,
                     ),
                     GestureDetector(
-                      onTap: onTap,
+                      onTap: widget.onTap,
                       child: Text(
                         "Register Now",
                         style: TextStyle(
-                            color: Colors.blue, fontWeight: FontWeight.bold),
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],

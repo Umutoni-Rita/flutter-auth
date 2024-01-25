@@ -7,7 +7,7 @@ import 'package:flutterauth/components/my_textfield.dart';
 import 'package:flutterauth/components/square_tile.dart';
 
 class LoginPage extends StatefulWidget {
-  final Function onTap;
+  final Function()? onTap;
   const LoginPage({super.key, required this.onTap});
 
   @override
@@ -207,11 +207,11 @@ class _LoginPageState extends State<LoginPage> {
                       width: 4,
                     ),
                     GestureDetector(
-                      onTap: onTap,
+                      onTap: widget.onTap,
                       child: Text(
                         "Register Now",
                         style: TextStyle(
-                            color: Colors.blue, fontWeight: FontWeight.bold),
+                            color: Colors.blue, fontWeight: FontWeight.bold,),
                       ),
                     ),
                   ],
